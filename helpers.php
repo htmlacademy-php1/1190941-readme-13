@@ -277,3 +277,37 @@ function crop_text (string $text, int $max_chars = 300): string {
 function esc ($content) {
     return htmlspecialchars($content, ENT_QUOTES);
 }
+
+function show_title_date_format (string $date_time): string {
+    $date_time = new DateTime($date_time, new DateTimeZone('Europe/Moscow'));
+    return $date_time->format('d-m-Y H:i');
+}
+
+function get_relative_date_format (string $post_date, string $string_end): string {
+    $post_date = new DateTime($post_date, new DateTimeZone('Europe/Moscow'));
+    $current_date = new DateTime('now', new DateTimeZone('Europe/Moscow'));
+    $date_time_diff = $post_date->diff($current_date);
+    $correct_date_format = '';
+
+    if ($date_time_diff->y !== 0) {
+        $years = $date_time_diff->y;
+        $correct_date_format = "{$years} " . get_noun_plural_form($years, 'год', 'года', 'лет') . " $string_end";
+    } elseif ($date_time_diff->m !== 0) {
+        $months = $date_time_diff->m;
+        $correct_date_format = "{$months} " . get_noun_plural_form($months, 'месяц', 'месяца', 'месяцев') . " $string_end";
+    } elseif ($date_time_diff->d >= 7) {
+        $weeks = floor($date_time_diff->d / 7);
+        $correct_date_format = "{$weeks} " . get_noun_plural_form($weeks, 'неделю', 'недели', 'недели') . " $string_end";
+    } elseif ($date_time_diff->d < 7 && $date_time_diff->d !== 0) {
+        $days = $date_time_diff->d;
+        $correct_date_format = "{$days} " . get_noun_plural_form($days, 'день', 'дня', 'дней') . " $string_end";
+    } elseif ($date_time_diff->h !== 0) {
+        $hours = $date_time_diff->h;
+        $correct_date_format = "{$hours} " . get_noun_plural_form($hours, 'час', 'часа', 'часов') . " $string_end";
+    } elseif ($date_time_diff->i !== 0) {
+        $minutes = $date_time_diff->i;
+        $correct_date_format = "{$minutes} " . get_noun_plural_form($minutes, 'минуту', 'минуты', 'минут') . " $string_end";
+    }
+
+    return esc($correct_date_format);
+}

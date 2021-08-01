@@ -118,7 +118,7 @@
                         <?php endif; ?>
                     <?php elseif ($post['type'] === 'post-photo'): ?>
                         <div class="post-photo__image-wrapper">
-                            <img src="img/<?= esc($post['content']); ?>" alt="Фото от пользователя <?= esc($post['user-name']); ?>" width="360" height="240">
+                            <img src="uploads/photos/<?= esc($post['content']); ?>" alt="Фото от пользователя <?= esc($post['user-name']); ?>" width="360" height="240">
                         </div>
                     <?php elseif ($post['type'] === 'post-link'): ?>
                         <div class="post-link__wrapper">
@@ -154,11 +154,11 @@
                         <a class="post__author-link" href="#" title="Автор">
                             <div class="post__avatar-wrapper">
                                 <!--укажите путь к файлу аватара-->
-                                <img class="post__author-avatar" src="img/<?= esc($post['avatar']); ?>" alt="Аватар пользователя <?= esc($post['user-name']); ?>">
+                                <img class="post__author-avatar" src="uploads/avatars/<?= esc($post['avatar']); ?>" alt="Аватар пользователя <?= esc($post['user-name']); ?>">
                             </div>
                             <div class="post__info">
                                 <b class="post__author-name"><?= esc($post['user-name']); ?></b>
-                                <time class="post__time" datetime="">дата</time>
+                                <time class="post__time" datetime="<?= esc($post['date']); ?>" title="<?= show_title_date_format($post['date']); ?>"><?= get_relative_date_format($post['date'], 'назад'); ?></time>
                             </div>
                         </a>
                     </div>

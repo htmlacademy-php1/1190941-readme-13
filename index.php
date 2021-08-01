@@ -58,6 +58,11 @@ $post_data = [
     ],
 ];
 
+foreach ($post_data as $id => &$post) {
+    $post_date = generate_random_date($id);
+    $post['date'] = $post_date;
+}
+
 $page_main_content = include_template('index.php', ['post_data' => $post_data]);
 
 $page_layout = include_template('layout.php', [
