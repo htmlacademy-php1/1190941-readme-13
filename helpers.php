@@ -130,7 +130,7 @@ function get_noun_plural_form(int $number, string $one, string $two, string $man
  * @param array $data Ассоциативный массив с данными для шаблона
  * @return string Итоговый HTML
  */
-function include_template (string $name, array $data = []): string {
+function includeTemplate (string $name, array $data = []): string {
     $name = 'view/templates/' . $name;
 
     ob_start();
@@ -148,7 +148,7 @@ function include_template (string $name, array $data = []): string {
  */
 function check_youtube_url($url)
 {
-    $id = extract_youtube_id($url);
+    $id = extractYoutubeId($url);
 
     set_error_handler(function () {}, E_WARNING);
     $headers = get_headers('https://www.youtube.com/oembed?format=json&url=http://www.youtube.com/watch?v=' . $id);
@@ -175,7 +175,7 @@ function check_youtube_url($url)
 function embed_youtube_video($youtube_url)
 {
     $res = "";
-    $id = extract_youtube_id($youtube_url);
+    $id = extractYoutubeId($youtube_url);
 
     if ($id) {
         $src = "https://www.youtube.com/embed/" . $id;
@@ -187,13 +187,13 @@ function embed_youtube_video($youtube_url)
 
 /**
  * Возвращает img-тег с обложкой видео для вставки на страницу
- * @param string $youtube_url Ссылка на youtube видео
+ * @param string $youtubeUrl Ссылка на youtube видео
  * @return string
  */
-function embed_youtube_cover($youtube_url)
+function embedYoutubeCover(string $youtubeUrl): string
 {
     $res = "";
-    $id = extract_youtube_id($youtube_url);
+    $id = extractYoutubeId($youtubeUrl);
 
     if ($id) {
         $src = sprintf("https://img.youtube.com/vi/%s/mqdefault.jpg", $id);
@@ -205,14 +205,14 @@ function embed_youtube_cover($youtube_url)
 
 /**
  * Извлекает из ссылки на youtube видео его уникальный ID
- * @param string $youtube_url Ссылка на youtube видео
+ * @param string $youtubeUrl Ссылка на youtube видео
  * @return array
  */
-function extract_youtube_id($youtube_url)
+function extractYoutubeId(string $youtubeUrl)
 {
     $id = false;
 
-    $parts = parse_url($youtube_url);
+    $parts = parse_url($youtubeUrl);
 
     if ($parts) {
         if ($parts['path'] == '/watch') {
@@ -268,9 +268,11 @@ function cropText (string $text, int $maxChars = 300): string
 
     foreach ($textParts as $textPart) {
         $totalChars += mb_strlen($textPart) + $spaceValue;
+
         if (($totalChars - $spaceValue) >= $maxChars) {
             break;
         }
+
         $verifiedText[] = $textPart;
     }
 
@@ -279,6 +281,7 @@ function cropText (string $text, int $maxChars = 300): string
     return $text . ' ...';
 }
 
-function esc ($content) {
+function esc ($content)
+{
     return htmlspecialchars($content, ENT_QUOTES);
 }

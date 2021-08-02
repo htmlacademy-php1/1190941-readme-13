@@ -58,14 +58,14 @@ $postData = [
     ],
 ];
 
-$page_main_content = include_template('index.php', ['post_data' => $post_data]);
+$pageMainContent = includeTemplate('index.php', ['postData' => $postData]);
 
-$page_layout = include_template('layout.php', [
-    'page_title' => 'Readme - популярное',
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
-    'page_main_content' => $page_main_content,
-    'page_main_class' => 'popular',
+$pageLayout = includeTemplate('layout.php', [
+    'pageTitle' => 'Readme - популярное',
+    'isAuth' => $isAuth,
+    'userName' => $userName,
+    'pageMainContent' => $pageMainContent,
+    'pageMainClass' => 'popular',
 ]);
 
-print($page_layout);
+print($pageLayout);

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @var array $post_data
+ * @var array $postData
 */
 
 ?>
@@ -98,7 +98,7 @@
 
     <div class="popular__posts">
 
-        <?php foreach ($post_data as $post): ?>
+        <?php foreach ($postData as $post): ?>
             <article class="popular__post post <?= esc($post['type']); ?>">
                 <header class="post__header">
                     <h2><?= esc($post['header']); ?></h2>
@@ -112,13 +112,13 @@
                             <cite><?= esc($post['cite-author']); ?></cite>
                         </blockquote>
                     <?php elseif ($post['type'] === 'post-text'): ?>
-                        <p><?= $received_text = crop_text(esc($post['content'])); ?></p>
-                        <?php if ($received_text !== $post['content']): ?>
+                        <p><?= $receivedText = cropText(esc($post['content'])); ?></p>
+                        <?php if ($receivedText !== $post['content']): ?>
                             <a class="post-text__more-link" href="#">Читать далее</a>
                         <?php endif; ?>
                     <?php elseif ($post['type'] === 'post-photo'): ?>
                         <div class="post-photo__image-wrapper">
-                            <img src="img/<?= esc($post['content']); ?>" alt="Фото от пользователя <?= esc($post['user-name']); ?>" width="360" height="240">
+                            <img src="uploads/photos/<?= esc($post['content']); ?>" alt="Фото от пользователя <?= esc($post['user-name']); ?>" width="360" height="240">
                         </div>
                     <?php elseif ($post['type'] === 'post-link'): ?>
                         <div class="post-link__wrapper">
@@ -137,7 +137,7 @@
                     <?php elseif ($post['type'] === 'post-video'): ?>
                         <div class="post-video__block">
                             <div class="post-video__preview">
-                                <?= embed_youtube_cover(esc($post['content'])); ?>
+                                <?= embedYoutubeCover(esc($post['content'])); ?>
                             </div>
                             <a href="/" class="post-video__play-big button">
                                 <svg class="post-video__play-big-icon" width="14" height="14">
@@ -154,7 +154,7 @@
                         <a class="post__author-link" href="#" title="Автор">
                             <div class="post__avatar-wrapper">
                                 <!--укажите путь к файлу аватара-->
-                                <img class="post__author-avatar" src="img/<?= esc($post['avatar']); ?>" alt="Аватар пользователя <?= esc($post['user-name']); ?>">
+                                <img class="post__author-avatar" src="uploads/avatars/<?= esc($post['avatar']); ?>" alt="Аватар пользователя <?= esc($post['user-name']); ?>">
                             </div>
                             <div class="post__info">
                                 <b class="post__author-name"><?= esc($post['user-name']); ?></b>
