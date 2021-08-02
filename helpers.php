@@ -262,3 +262,27 @@ function generate_random_date($index)
 
     return $dt;
 }
+
+function cropText (string $text, int $maxChars = 300): string
+{
+    if (mb_strlen($text) < $maxChars) {
+        return $text;
+    }
+
+    $totalChars = 0;
+    $spaceValue = 1;
+    $verifiedText = [];
+    $textParts = explode(' ', $text);
+
+    foreach ($textParts as $textPart) {
+        $totalChars += mb_strlen($textPart) + $spaceValue;
+        if (($totalChars - $spaceValue) >= $maxChars) {
+            break;
+        }
+        $verifiedText[] = $textPart;
+    }
+
+    $text = implode(' ', $verifiedText);
+
+    return $text . ' ...';
+}
