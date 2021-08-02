@@ -2,10 +2,10 @@
 
 require ('helpers.php');
 
-$is_auth = rand(0, 1);
-$user_name = 'Мое имя'; // укажите здесь ваше имя
+$isAuth = rand(0, 1);
+$userName = 'Мое имя'; // укажите здесь ваше имя
 
-$post_data = [
+$postData = [
     [
         'header' => 'Цитата',
         'type' => 'post-quote',
@@ -98,7 +98,7 @@ $post_data = [
         </form>
         <div class="header__nav-wrapper">
             <!-- здесь должен быть PHP код, который показывает следующий тег по условию -->
-            <?php if ($is_auth): ?>
+            <?php if ($isAuth): ?>
             <nav class="header__nav">
                 <ul class="header__my-nav">
                     <li class="header__my-page header__my-page--popular">
@@ -127,7 +127,7 @@ $post_data = [
                             <div class="header__profile-name">
                                 <span>
                                     <!--здесь должно быть имя пользователя-->
-                                    <?= $user_name; ?>
+                                    <?= $userName; ?>
                                 </span>
                                 <svg class="header__link-arrow" width="10" height="6">
                                     <use xlink:href="#icon-arrow-right-ad"></use>
@@ -263,7 +263,7 @@ $post_data = [
 
         <div class="popular__posts">
 
-            <?php foreach ($post_data as $post): ?>
+            <?php foreach ($postData as $post): ?>
             <article class="popular__post post <?= $post['type']; ?>">
                 <header class="post__header">
                     <h2><?= $post['header']; ?></h2>
@@ -277,8 +277,8 @@ $post_data = [
                             <cite><?= $post['cite-author']; ?></cite>
                         </blockquote>
                     <?php elseif ($post['type'] === 'post-text'): ?>
-                        <p><?= $received_text = crop_text($post['content']); ?></p>
-                        <?php if ($received_text !== $post['content']): ?>
+                        <p><?= $receivedText = cropText($post['content']); ?></p>
+                        <?php if ($receivedText !== $post['content']): ?>
                             <a class="post-text__more-link" href="#">Читать далее</a>
                         <?php endif; ?>
                     <?php elseif ($post['type'] === 'post-photo'): ?>
