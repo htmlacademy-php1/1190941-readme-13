@@ -255,22 +255,27 @@ function generate_random_date($index)
     return $dt;
 }
 
-function crop_text (string $text, int $max_chars = 300): string {
-    if (mb_strlen($text) < $max_chars) {
+function cropText (string $text, int $maxChars = 300): string
+{
+    if (mb_strlen($text) < $maxChars) {
         return $text;
     }
-    $text_parts = explode(' ', $text);
-    $total_chars = 0;
-    $space_value = 1;
-    $verified_text = [];
-    foreach ($text_parts as $text_part) {
-        $total_chars += mb_strlen($text_part) + $space_value;
-        if (($total_chars - $space_value) >= $max_chars) {
+
+    $totalChars = 0;
+    $spaceValue = 1;
+    $verifiedText = [];
+    $textParts = explode(' ', $text);
+
+    foreach ($textParts as $textPart) {
+        $totalChars += mb_strlen($textPart) + $spaceValue;
+        if (($totalChars - $spaceValue) >= $maxChars) {
             break;
         }
-        $verified_text[] = $text_part;
+        $verifiedText[] = $textPart;
     }
-    $text = implode(' ', $verified_text);
+
+    $text = implode(' ', $verifiedText);
+
     return $text . ' ...';
 }
 

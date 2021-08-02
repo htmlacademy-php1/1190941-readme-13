@@ -2,10 +2,10 @@
 
 require 'helpers.php';
 
-$is_auth = rand(0, 1);
-$user_name = 'Мое имя'; // укажите здесь ваше имя
+$isAuth = rand(0, 1);
+$userName = 'Мое имя'; // укажите здесь ваше имя
 
-$post_data = [
+$postData = [
     [
         'header' => 'Цитата',
         'type' => 'post-quote',
