@@ -100,7 +100,7 @@ function db_get_prepare_stmt($link, $sql, $data = [])
  *
  * @return string Рассчитанная форма множественнго числа
  */
-function get_noun_plural_form(int $number, string $one, string $two, string $many): string
+function getNounPluralForm(int $number, string $one, string $two, string $many): string
 {
     $number = (int)$number;
     $mod10 = $number % 10;
@@ -232,7 +232,7 @@ function extractYoutubeId(string $youtubeUrl)
  * @param $index
  * @return false|string
  */
-function generate_random_date($index)
+function generateRandomDate($index)
 {
     $deltas = [['minutes' => 59], ['hours' => 23], ['days' => 6], ['weeks' => 4], ['months' => 11]];
     $dcnt = count($deltas);
@@ -286,36 +286,39 @@ function esc ($content)
     return htmlspecialchars($content, ENT_QUOTES);
 }
 
-function show_title_date_format (string $date_time): string {
-    $date_time = new DateTime($date_time, new DateTimeZone('Europe/Moscow'));
-    return $date_time->format('d-m-Y H:i');
+function showTitleDateFormat (string $dateTime): string
+{
+    $dateTime = new DateTime($dateTime, new DateTimeZone('Europe/Moscow'));
+
+    return $dateTime->format('d-m-Y H:i');
 }
 
-function get_relative_date_format (string $post_date, string $string_end): string {
-    $post_date = new DateTime($post_date, new DateTimeZone('Europe/Moscow'));
-    $current_date = new DateTime('now', new DateTimeZone('Europe/Moscow'));
-    $date_time_diff = $post_date->diff($current_date);
-    $correct_date_format = '';
+function getRelativeDateFormat (string $postDate, string $stringEnd): string
+{
+    $postDate = new DateTime($postDate, new DateTimeZone('Europe/Moscow'));
+    $currentDate = new DateTime('now', new DateTimeZone('Europe/Moscow'));
+    $dateTimeDiff = $postDate->diff($currentDate);
+    $correctDateFormat = '';
 
-    if ($date_time_diff->y !== 0) {
-        $years = $date_time_diff->y;
-        $correct_date_format = "{$years} " . get_noun_plural_form($years, 'год', 'года', 'лет') . " $string_end";
-    } elseif ($date_time_diff->m !== 0) {
-        $months = $date_time_diff->m;
-        $correct_date_format = "{$months} " . get_noun_plural_form($months, 'месяц', 'месяца', 'месяцев') . " $string_end";
-    } elseif ($date_time_diff->d >= 7) {
-        $weeks = floor($date_time_diff->d / 7);
-        $correct_date_format = "{$weeks} " . get_noun_plural_form($weeks, 'неделю', 'недели', 'недели') . " $string_end";
-    } elseif ($date_time_diff->d < 7 && $date_time_diff->d !== 0) {
-        $days = $date_time_diff->d;
-        $correct_date_format = "{$days} " . get_noun_plural_form($days, 'день', 'дня', 'дней') . " $string_end";
-    } elseif ($date_time_diff->h !== 0) {
-        $hours = $date_time_diff->h;
-        $correct_date_format = "{$hours} " . get_noun_plural_form($hours, 'час', 'часа', 'часов') . " $string_end";
-    } elseif ($date_time_diff->i !== 0) {
-        $minutes = $date_time_diff->i;
-        $correct_date_format = "{$minutes} " . get_noun_plural_form($minutes, 'минуту', 'минуты', 'минут') . " $string_end";
+    if ($dateTimeDiff->y !== 0) {
+        $years = $dateTimeDiff->y;
+        $correctDateFormat = "{$years} " . getNounPluralForm($years, 'год', 'года', 'лет') . " $stringEnd";
+    } elseif ($dateTimeDiff->m !== 0) {
+        $months = $dateTimeDiff->m;
+        $correctDateFormat = "{$months} " . getNounPluralForm($months, 'месяц', 'месяца', 'месяцев') . " $stringEnd";
+    } elseif ($dateTimeDiff->d >= 7) {
+        $weeks = floor($dateTimeDiff->d / 7);
+        $correctDateFormat = "{$weeks} " . getNounPluralForm($weeks, 'неделю', 'недели', 'недели') . " $stringEnd";
+    } elseif ($dateTimeDiff->d < 7 && $dateTimeDiff->d !== 0) {
+        $days = $dateTimeDiff->d;
+        $correctDateFormat = "{$days} " . getNounPluralForm($days, 'день', 'дня', 'дней') . " $stringEnd";
+    } elseif ($dateTimeDiff->h !== 0) {
+        $hours = $dateTimeDiff->h;
+        $correctDateFormat = "{$hours} " . getNounPluralForm($hours, 'час', 'часа', 'часов') . " $stringEnd";
+    } elseif ($dateTimeDiff->i !== 0) {
+        $minutes = $dateTimeDiff->i;
+        $correctDateFormat = "{$minutes} " . getNounPluralForm($minutes, 'минуту', 'минуты', 'минут') . " $stringEnd";
     }
 
-    return esc($correct_date_format);
+    return $correctDateFormat;
 }

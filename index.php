@@ -58,12 +58,12 @@ $postData = [
     ],
 ];
 
-foreach ($post_data as $id => &$post) {
-    $post_date = generate_random_date($id);
-    $post['date'] = $post_date;
+foreach ($postData as $id => &$post) {
+    $postDate = generateRandomDate($id);
+    $post['date'] = $postDate;
 }
 
-$page_main_content = include_template('index.php', ['post_data' => $post_data]);
+$pageMainContent = includeTemplate('index.php', ['postData' => $postData]);
 
 $pageLayout = includeTemplate('layout.php', [
     'pageTitle' => 'Readme - популярное',
