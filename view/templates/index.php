@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @var array $post_data
+ * @var array $postData
 */
 
 ?>
@@ -98,7 +98,7 @@
 
     <div class="popular__posts">
 
-        <?php foreach ($post_data as $post): ?>
+        <?php foreach ($postData as $post): ?>
             <article class="popular__post post <?= esc($post['type']); ?>">
                 <header class="post__header">
                     <h2><?= esc($post['header']); ?></h2>
@@ -112,8 +112,8 @@
                             <cite><?= esc($post['cite-author']); ?></cite>
                         </blockquote>
                     <?php elseif ($post['type'] === 'post-text'): ?>
-                        <p><?= $received_text = crop_text(esc($post['content'])); ?></p>
-                        <?php if ($received_text !== $post['content']): ?>
+                        <p><?= $receivedText = cropText(esc($post['content'])); ?></p>
+                        <?php if ($receivedText !== $post['content']): ?>
                             <a class="post-text__more-link" href="#">Читать далее</a>
                         <?php endif; ?>
                     <?php elseif ($post['type'] === 'post-photo'): ?>
@@ -137,7 +137,7 @@
                     <?php elseif ($post['type'] === 'post-video'): ?>
                         <div class="post-video__block">
                             <div class="post-video__preview">
-                                <?= embed_youtube_cover(esc($post['content'])); ?>
+                                <?= embedYoutubeCover(esc($post['content'])); ?>
                             </div>
                             <a href="/" class="post-video__play-big button">
                                 <svg class="post-video__play-big-icon" width="14" height="14">

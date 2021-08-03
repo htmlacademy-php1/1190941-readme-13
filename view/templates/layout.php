@@ -1,11 +1,11 @@
 <?php
 
 /**
- * @var string $page_title
- * @var bool $is_auth
- * @var string $user_name
- * @var string $page_main_class
- * @var string $page_main_content
+ * @var string $pageTitle
+ * @var bool $isAuth
+ * @var string $userName
+ * @var string $pageMainClass
+ * @var string $pageMainContent
  */
 
 ?>
@@ -16,7 +16,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title><?= esc($page_title); ?></title>
+        <title><?= esc($pageTitle); ?></title>
         <link rel="stylesheet" href="/view/css/main.css">
     </head>
 
@@ -116,7 +116,7 @@
                 </form>
                 <div class="header__nav-wrapper">
                     <!-- здесь должен быть PHP код, который показывает следующий тег по условию -->
-                    <?php if ($is_auth): ?>
+                    <?php if ($isAuth): ?>
                         <nav class="header__nav">
                             <ul class="header__my-nav">
                                 <li class="header__my-page header__my-page--popular">
@@ -145,7 +145,7 @@
                                         <div class="header__profile-name">
                                         <span>
                                             <!--здесь должно быть имя пользователя-->
-                                            <?= esc($user_name); ?>
+                                            <?= esc($userName); ?>
                                         </span>
                                             <svg class="header__link-arrow" width="10" height="6">
                                                 <use xlink:href="#icon-arrow-right-ad"></use>
@@ -192,8 +192,8 @@
             </div>
         </header>
 
-        <section class="page__main page__main--<?= esc($page_main_class); ?>">
-            <?= $page_main_content; ?>
+        <section class="page__main page__main--<?= esc($pageMainClass); ?>">
+            <?= $pageMainContent; ?>
         </section>
 
         <footer class="footer">

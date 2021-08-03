@@ -2,10 +2,10 @@
 
 require 'helpers.php';
 
-$is_auth = rand(0, 1);
-$user_name = 'Мое имя'; // укажите здесь ваше имя
+$isAuth = rand(0, 1);
+$userName = 'Мое имя'; // укажите здесь ваше имя
 
-$post_data = [
+$postData = [
     [
         'header' => 'Цитата',
         'type' => 'post-quote',
@@ -65,12 +65,12 @@ foreach ($post_data as $id => &$post) {
 
 $page_main_content = include_template('index.php', ['post_data' => $post_data]);
 
-$page_layout = include_template('layout.php', [
-    'page_title' => 'Readme - популярное',
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
-    'page_main_content' => $page_main_content,
-    'page_main_class' => 'popular',
+$pageLayout = includeTemplate('layout.php', [
+    'pageTitle' => 'Readme - популярное',
+    'isAuth' => $isAuth,
+    'userName' => $userName,
+    'pageMainContent' => $pageMainContent,
+    'pageMainClass' => 'popular',
 ]);
 
-print($page_layout);
+print($pageLayout);
