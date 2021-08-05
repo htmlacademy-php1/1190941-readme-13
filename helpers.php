@@ -302,22 +302,22 @@ function getRelativeDateFormat (string $postDate, string $stringEnd): string
 
     if ($dateTimeDiff->y !== 0) {
         $years = $dateTimeDiff->y;
-        $correctDateFormat = "{$years} " . getNounPluralForm($years, 'год', 'года', 'лет') . " $stringEnd";
+        $correctDateFormat = sprintf("{$years} %s {$stringEnd}", getNounPluralForm($years, 'год', 'года', 'лет'));
     } elseif ($dateTimeDiff->m !== 0) {
         $months = $dateTimeDiff->m;
-        $correctDateFormat = "{$months} " . getNounPluralForm($months, 'месяц', 'месяца', 'месяцев') . " $stringEnd";
+        $correctDateFormat = sprintf("{$months} %s {$stringEnd}", getNounPluralForm($months, 'месяц', 'месяца', 'месяцев'));
     } elseif ($dateTimeDiff->d >= 7) {
         $weeks = floor($dateTimeDiff->d / 7);
-        $correctDateFormat = "{$weeks} " . getNounPluralForm($weeks, 'неделю', 'недели', 'недели') . " $stringEnd";
+        $correctDateFormat = sprintf("{$weeks} %s {$stringEnd}", getNounPluralForm($weeks, 'неделю', 'недели', 'недели'));
     } elseif ($dateTimeDiff->d < 7 && $dateTimeDiff->d !== 0) {
         $days = $dateTimeDiff->d;
-        $correctDateFormat = "{$days} " . getNounPluralForm($days, 'день', 'дня', 'дней') . " $stringEnd";
+        $correctDateFormat = sprintf("{$days} %s {$stringEnd}", getNounPluralForm($days, 'день', 'дня', 'дней'));
     } elseif ($dateTimeDiff->h !== 0) {
         $hours = $dateTimeDiff->h;
-        $correctDateFormat = "{$hours} " . getNounPluralForm($hours, 'час', 'часа', 'часов') . " $stringEnd";
+        $correctDateFormat = sprintf("{$hours} %s {$stringEnd}", getNounPluralForm($hours, 'час', 'часа', 'часов'));
     } elseif ($dateTimeDiff->i !== 0) {
         $minutes = $dateTimeDiff->i;
-        $correctDateFormat = "{$minutes} " . getNounPluralForm($minutes, 'минуту', 'минуты', 'минут') . " $stringEnd";
+        $correctDateFormat = sprintf("{$minutes} %s {$stringEnd}", getNounPluralForm($minutes, 'минуту', 'минуты', 'минут'));
     }
 
     return $correctDateFormat;
