@@ -158,7 +158,7 @@
                             </div>
                             <div class="post__info">
                                 <b class="post__author-name"><?= esc($post['user-name']); ?></b>
-                                <time class="post__time" datetime="">дата</time>
+                                <time class="post__time" datetime="<?= esc($post['date']); ?>" title="<?= showTitleDateFormat(esc($post['date'])); ?>"><?= getRelativeDateFormat(esc($post['date']), 'назад'); ?></time>
                             </div>
                         </a>
                     </div>

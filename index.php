@@ -58,6 +58,11 @@ $postData = [
     ],
 ];
 
+foreach ($postData as $id => &$post) {
+    $postDate = generateRandomDate($id);
+    $post['date'] = $postDate;
+}
+
 $pageMainContent = includeTemplate('index.php', ['postData' => $postData]);
 
 $pageLayout = includeTemplate('layout.php', [
