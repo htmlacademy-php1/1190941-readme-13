@@ -2,6 +2,9 @@
 
 /**
  * @var array $postData
+ * @var array $postTypes
+ * @var array $queryString
+ * @var array $pagination
 */
 
 ?>
@@ -48,50 +51,20 @@
             <b class="popular__filters-caption filters__caption">Тип контента:</b>
             <ul class="popular__filters-list filters__list">
                 <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
-                    <a class="filters__button filters__button--ellipse filters__button--all filters__button--active" href="#">
+                    <a class="filters__button filters__button--ellipse filters__button--all <?= ($queryString['type']) ?: 'filters__button--active' ?>" href="/">
                         <span>Все</span>
                     </a>
                 </li>
-                <li class="popular__filters-item filters__item">
-                    <a class="filters__button filters__button--photo button" href="#">
-                        <span class="visually-hidden">Фото</span>
-                        <svg class="filters__icon" width="22" height="18">
-                            <use xlink:href="#icon-filter-photo"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li class="popular__filters-item filters__item">
-                    <a class="filters__button filters__button--video button" href="#">
-                        <span class="visually-hidden">Видео</span>
-                        <svg class="filters__icon" width="24" height="16">
-                            <use xlink:href="#icon-filter-video"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li class="popular__filters-item filters__item">
-                    <a class="filters__button filters__button--text button" href="#">
-                        <span class="visually-hidden">Текст</span>
-                        <svg class="filters__icon" width="20" height="21">
-                            <use xlink:href="#icon-filter-text"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li class="popular__filters-item filters__item">
-                    <a class="filters__button filters__button--quote button" href="#">
-                        <span class="visually-hidden">Цитата</span>
-                        <svg class="filters__icon" width="21" height="20">
-                            <use xlink:href="#icon-filter-quote"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li class="popular__filters-item filters__item">
-                    <a class="filters__button filters__button--link button" href="#">
-                        <span class="visually-hidden">Ссылка</span>
-                        <svg class="filters__icon" width="21" height="18">
-                            <use xlink:href="#icon-filter-link"></use>
-                        </svg>
-                    </a>
-                </li>
+                <?php foreach ($postTypes as $type): ?>
+                    <li class="popular__filters-item filters__item">
+                        <a class="filters__button filters__button--<?= esc($type['class_name']); ?> button<?= !$queryString['type'] || $queryString['type'] !== $type['id'] ?: ' filters__button--active' ?>" href="<?= '?type=' . esc($type['id']); ?>">
+                            <span class="visually-hidden"><?= esc($type['name']); ?></span>
+                            <svg class="filters__icon" width="22" height="18">
+                                <use xlink:href="#icon-filter-<?= esc($type['class_name']); ?>"></use>
+                            </svg>
+                        </a>
+                    </li>
+                <?php endforeach; ?>
             </ul>
         </div>
     </div>
@@ -99,45 +72,45 @@
     <div class="popular__posts">
 
         <?php foreach ($postData as $post): ?>
-            <article class="popular__post post <?= esc($post['type']); ?>">
+            <article class="popular__post post post-<?= esc($post['type']); ?>">
                 <header class="post__header">
-                    <h2><?= esc($post['header']); ?></h2>
+                    <h2><?= esc($post['title']); ?></h2>
                 </header>
 
                 <div class="post__main">
                     <!--здесь содержимое карточки-->
-                    <?php if ($post['type'] === 'post-quote'): ?>
+                    <?php if ($post['type'] === 'quote'): ?>
                         <blockquote>
-                            <p><?= esc($post['content']); ?></p>
-                            <cite><?= esc($post['cite-author']); ?></cite>
+                            <p><?= esc($post['text_content']); ?></p>
+                            <cite><?= esc($post['cite_author']); ?></cite>
                         </blockquote>
-                    <?php elseif ($post['type'] === 'post-text'): ?>
-                        <p><?= $receivedText = cropText(esc($post['content'])); ?></p>
-                        <?php if ($receivedText !== $post['content']): ?>
+                    <?php elseif ($post['type'] === 'text'): ?>
+                        <p><?= $receivedText = cropText(esc($post['text_content'])); ?></p>
+                        <?php if ($receivedText !== $post['text_content']): ?>
                             <a class="post-text__more-link" href="#">Читать далее</a>
                         <?php endif; ?>
-                    <?php elseif ($post['type'] === 'post-photo'): ?>
+                    <?php elseif ($post['type'] === 'photo'): ?>
                         <div class="post-photo__image-wrapper">
-                            <img src="uploads/photos/<?= esc($post['content']); ?>" alt="Фото от пользователя <?= esc($post['user-name']); ?>" width="360" height="240">
+                            <img src="uploads/photos/<?= esc($post['img_name']); ?>" alt="Фото от пользователя <?= esc($post['author']); ?>" width="360" height="240">
                         </div>
-                    <?php elseif ($post['type'] === 'post-link'): ?>
+                    <?php elseif ($post['type'] === 'link'): ?>
                         <div class="post-link__wrapper">
-                            <a class="post-link__external" href="//<?= esc($post['content']); ?>" title="Перейти по ссылке <?= esc($post['content']); ?>">
+                            <a class="post-link__external" href="//<?= esc($post['link']); ?>" title="Перейти по ссылке <?= esc($post['link']); ?>">
                                 <div class="post-link__info-wrapper">
                                     <div class="post-link__icon-wrapper">
-                                        <img src="//www.google.com/s2/favicons?domain=<?= esc($post['content']); ?>" alt="Иконка <?= esc($post['content']); ?>">
+                                        <img src="//www.google.com/s2/favicons?domain=<?= esc($post['link']); ?>" alt="Иконка <?= esc($post['link']); ?>">
                                     </div>
                                     <div class="post-link__info">
-                                        <h3><?= esc($post['header']); ?></h3>
+                                        <h3><?= esc($post['title']); ?></h3>
                                     </div>
                                 </div>
-                                <span><?= esc($post['content']); ?></span>
+                                <span><?= esc($post['link']); ?></span>
                             </a>
                         </div>
-                    <?php elseif ($post['type'] === 'post-video'): ?>
+                    <?php elseif ($post['type'] === 'video'): ?>
                         <div class="post-video__block">
                             <div class="post-video__preview">
-                                <?= embedYoutubeCover(esc($post['content'])); ?>
+                                <?= embedYoutubeCover(esc($post['youtube_link'])); ?>
                             </div>
                             <a href="/" class="post-video__play-big button">
                                 <svg class="post-video__play-big-icon" width="14" height="14">
@@ -154,11 +127,11 @@
                         <a class="post__author-link" href="#" title="Автор">
                             <div class="post__avatar-wrapper">
                                 <!--укажите путь к файлу аватара-->
-                                <img class="post__author-avatar" src="uploads/avatars/<?= esc($post['avatar']); ?>" alt="Аватар пользователя <?= esc($post['user-name']); ?>">
+                                <img class="post__author-avatar" src="uploads/avatars/<?= esc($post['avatar']); ?>" alt="Аватар пользователя <?= esc($post['author']); ?>">
                             </div>
                             <div class="post__info">
-                                <b class="post__author-name"><?= esc($post['user-name']); ?></b>
-                                <time class="post__time" datetime="<?= esc($post['date']); ?>" title="<?= showTitleDateFormat(esc($post['date'])); ?>"><?= getRelativeDateFormat(esc($post['date']), 'назад'); ?></time>
+                                <b class="post__author-name"><?= esc($post['author']); ?></b>
+                                <time class="post__time" datetime="<?= esc($post['creation_date']); ?>" title="<?= showTitleDateFormat(esc($post['creation_date'])); ?>"><?= getRelativeDateFormat(esc($post['creation_date']), 'назад'); ?></time>
                             </div>
                         </a>
                     </div>
@@ -181,6 +154,7 @@
                                 <span>0</span>
                                 <span class="visually-hidden">количество комментариев</span>
                             </a>
+                            <span class="post__view"><?= esc($post['views_count']); ?></span>
                         </div>
                     </div>
                 </footer>
@@ -188,4 +162,18 @@
         <?php endforeach; ?>
 
     </div>
+
+    <?php if ($pagination['next'] || $pagination['prev']): ?>
+        <div class="popular__page-links">
+            <?php if ($pagination['prev']): ?>
+                <?php $prev_link = getQueryString($queryString, ['page' => $pagination['prev'] === 1 ? null : $pagination['prev']]) ?>
+                <a class="popular__page-link popular__page-link--prev button button--gray" href="<?= $prev_link ?>">Предыдущая страница</a>
+            <?php endif; ?>
+            <?php if ($pagination['next']): ?>
+                <?php $next_link = getQueryString($queryString, ['page' => $pagination['next']]) ?>
+                <a class="popular__page-link popular__page-link--next button button--gray" href="<?= $next_link ?>">Следующая страница</a>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
+
 </div>

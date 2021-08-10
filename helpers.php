@@ -322,3 +322,44 @@ function getRelativeDateFormat (string $postDate, string $stringEnd): string
 
     return $correctDateFormat;
 }
+
+function preparedQuery ($db, string $sql, $params)
+{
+    $types = str_repeat('s', count($params));
+    $stmt = $db->prepare($sql);
+    $stmt->bind_param($types, ...$params);
+    $stmt->execute();
+
+    return $stmt;
+}
+
+function sqlSelect ($db, string $sql, array $params = [])
+{
+    if (!$params) {
+        return $db->query($sql);
+    }
+
+    return preparedQuery($db, $sql, $params)->get_result();
+}
+
+function sqlGetSingle ($db, string $sql, array $params = [])
+{
+    return sqlSelect($db, $sql, $params)->fetch_assoc();
+}
+
+function sqlGetMany ($db, string $sql, array $params = [])
+{
+    return sqlSelect($db, $sql, $params)->fetch_all(MYSQLI_ASSOC);
+}
+
+function getQueryString (array $queryString, array $modifier):string
+{
+    // TODO избавится от $mergedArray, подумать
+    $mergedArray = array_merge($queryString, $modifier);
+    foreach ($mergedArray as $key => $value) {
+        if ($value === null) {
+            unset($mergedArray[$key]);
+        }
+    }
+    return $mergedArray ? '?' . http_build_query($mergedArray) : '/';
+}
