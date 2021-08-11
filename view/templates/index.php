@@ -74,7 +74,10 @@
         <?php foreach ($postData as $post): ?>
             <article class="popular__post post post-<?= esc($post['type']); ?>">
                 <header class="post__header">
-                    <h2><?= esc($post['title']); ?></h2>
+                    <h2>
+                        <!--TODO прочесть доку по srintf, может удобнее будет-->
+                        <a href="<?= '/post.php?id=' . esc($post['id']); ?>"><?= esc($post['title']); ?></a>
+                    </h2>
                 </header>
 
                 <div class="post__main">
