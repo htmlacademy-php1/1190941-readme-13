@@ -13,6 +13,11 @@ require 'model/posts.php';
 
 $queryString = $_GET ?? [];
 $queryString['type'] = $queryString['type'] ?? null;
+$postTypes = getPostTypes($db);
+
+if ($queryString['type'] && !in_array($queryString['type'], array_column($postTypes, 'id')) || $queryString['type'] === '0' || $queryString['type'] === '') {
+    http_response_code(404);;
+}
 
 $pagesCount = getPagesCount($db, $queryString['type']);
 $limit = 6;
@@ -25,7 +30,6 @@ $pagination['next'] = $queryString['page'] + 1;
 $pagination['next'] = $pagination['next'] <= $totalPages ? $pagination['next'] : null;
 
 $postData = getPosts($db, $offset, $queryString['type']);
-$postTypes = getPostTypes($db);
 
 $pageMainContent = includeTemplate('index.php', [
     'postData' => $postData,

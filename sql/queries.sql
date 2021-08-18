@@ -76,7 +76,11 @@ VALUES ('Лучшие курсы', 5, 1, 'www.htmlacademy.ru', 348),
 INSERT INTO comments (comment, post_id, author_id)
 VALUES ('И я!', 2, 1),
        ('Круто!', 3, 3),
-       ('Согласен!', 5, 2);
+       ('Согласен!', 5, 2),
+       ('Красота!!!1!', 23, 1),
+       ('Зимой здесь можно кататься на коньках и собачьих упряжках.', 23, 3),
+       ('Можно кататься на коньках', 23, 1),
+       ('И собачьих упряжках зимой.', 23, 3);
 
 INSERT INTO likes (post_id, user_id)
 VALUES (1, 2),
@@ -102,7 +106,31 @@ VALUES (1, 2),
        (13, 3),
        (14, 2),
        (14, 4),
-       (14, 5);
+       (14, 5),
+       (23, 1),
+       (23, 3);
+
+INSERT INTO hashtags (name)
+VALUES ('nature'),
+       ('globe'),
+       ('photooftheday'),
+       ('canon'),
+       ('landscape'),
+       ('щикарныйвид');
+
+INSERT INTO post_tags (post_id, hashtag_id)
+VALUES (23, 1),
+       (23, 2),
+       (23, 5),
+       (23, 6);
+
+INSERT INTO subscriptions (user_id, follower_id)
+VALUES (5, 1),
+       (5, 3);
+
+INSERT INTO reposts (post_id, user_id)
+VALUES (23, 1),
+       (23, 3);
 
 /* Добавить лайк к посту; */
 INSERT INTO likes (post_id, user_id) VALUES (2, 3);

@@ -169,13 +169,13 @@ function check_youtube_url($url)
 
 /**
  * Возвращает код iframe для вставки youtube видео на страницу
- * @param string $youtube_url Ссылка на youtube видео
+ * @param string $youtubeUrl Ссылка на youtube видео
  * @return string
  */
-function embed_youtube_video($youtube_url)
+function embedYoutubeVideo($youtubeUrl)
 {
     $res = "";
-    $id = extractYoutubeId($youtube_url);
+    $id = extractYoutubeId($youtubeUrl);
 
     if ($id) {
         $src = "https://www.youtube.com/embed/" . $id;
@@ -362,25 +362,4 @@ function getQueryString (array $queryString, array $modifier):string
         }
     }
     return $mergedArray ? '?' . http_build_query($mergedArray) : '/';
-}
-
-// TODO попробовать скомпоновать в 1 с get_404_page
-function build404Page ($isAuth, $userName): string
-{
-    http_response_code(404);
-
-    $pageLayout = includeTemplate('layout.php', [
-        'pageTitle' => 'Readme ▶️ 404',
-        'isAuth' => $isAuth,
-        'userName' => $userName,
-        'pageMainContent' => includeTemplate('404.php'),
-    ]);
-
-    return print $pageLayout;
-}
-
-function get404Page ($is_auth, $user_name)
-{
-    build404Page($is_auth, $user_name);
-    exit();
 }

@@ -2,78 +2,63 @@
 /**
  * @var array $post
  * @var array $comments
+ * @var array $hashtags
  */
 ?>
 
 <div class="container">
-    <h1 class="page__title page__title--publication"><?= esc($post['title']); ?></h1>
+    <h1 class="page__title page__title--publication"><?= esc($post['title']) ?></h1>
     <section class="post-details">
         <h2 class="visually-hidden">Публикация</h2>
-        <div class="post-details__wrapper post-<?= esc($post['type']); ?>">
+
+        <div class="post-details__wrapper post-photo">
             <div class="post-details__main-block post post--details">
+
                 <?php if ($post['type'] === 'photo'): ?>
-                    <div class="post-details__image-wrapper post-photo__image-wrapper">
-                        <img src="/view/img/photos/<?= esc($post['photo']); ?>" alt="Фото от пользователя" width="760" height="507">
-                    </div>
-                <?php elseif ($post['type'] === 'text'): ?>
-                    <div class="post__main">
-                        <p><?= esc($post['text']); ?></p>
-                    </div>
+                <div class="post-details__image-wrapper post-photo__image-wrapper">
+                    <img src="uploads/photos/<?= esc($post['photo']) ?>" alt="Фото от пользователя <?= esc($post['author']) ?>" width="760" height="507">
+                </div>
+
                 <?php elseif ($post['type'] === 'quote'): ?>
+                <div class="post-details__image-wrapper post-quote">
                     <div class="post__main">
                         <blockquote>
-                            <p><?= esc($post['text']); ?></p>
-                            <cite><?= esc($post['cite_author']); ?></cite>
+                            <p><?= esc($post['text']) ?></p>
+                            <cite><?= esc($post['cite_author']) ?></cite>
                         </blockquote>
                     </div>
-                <?php elseif ($post['type'] === 'video'): ?>
+                </div>
+
+                <?php elseif ($post['type'] === 'text'): ?>
+                <div class="post-details__image-wrapper post-text">
                     <div class="post__main">
-                        <div class="post-video__block">
-                            <div class="post-video__preview">
-                                <?= embed_youtube_video($post['youtube_link']); ?>
-                            </div>
-                            <!--<div class="post-video__control">
-                                <button class="post-video__play post-video__play--paused button button--video" type="button">
-                                    <span class="visually-hidden">Запустить видео</span>
-                                </button>
-                                <div class="post-video__scale-wrapper">
-                                    <div class="post-video__scale">
-                                        <div class="post-video__bar">
-                                            <div class="post-video__toggle"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button class="post-video__fullscreen post-video__fullscreen--inactive button button--video" type="button">
-                                    <span class="visually-hidden">Полноэкранный режим</span>
-                                </button>
-                            </div>
-                            <button class="post-video__play-big button" type="button">
-                                <svg class="post-video__play-big-icon" width="27" height="28">
-                                    <use xlink:href="#icon-video-play-big"></use>
-                                </svg>
-                                <span class="visually-hidden">Запустить проигрыватель</span>
-                            </button>-->
-                        </div>
+                        <p><?= esc($post['text']) ?></p>
                     </div>
+                </div>
+
                 <?php elseif ($post['type'] === 'link'): ?>
-                    <div class="post__main">
-                        <div class="post-link__wrapper">
-                            <a class="post-link__external" href="//<?= esc($post['link']); ?>" title="Перейти по ссылке">
+                <div class="post__main">
+                    <div class="post-link__wrapper">
+                        <a class="post-link__external" href="//<?= esc($post['link']); ?>" title="Перейти по ссылке <?= esc($post['link']); ?>">
+                            <div class="post-link__info-wrapper">
                                 <div class="post-link__icon-wrapper">
-                                    <img src="/view/img/logo-vita.jpg" alt="Иконка">
+                                    <img src="https://www.google.com/s2/favicons?domain=<?= esc($post['link']); ?>" alt="Иконка">
                                 </div>
                                 <div class="post-link__info">
-                                    <h3><?= esc($post['title']); ?></h3>
-                                    <p>Не ясно что тут должно быть</p>
-                                    <span><?= esc($post['link']); ?></span>
+                                    <h3><?= esc($post['link']); ?></h3>
                                 </div>
-                                <svg class="post-link__arrow" width="11" height="16">
-                                    <use xlink:href="#icon-arrow-right-ad"></use>
-                                </svg>
-                            </a>
-                        </div>
+                            </div>
+                        </a>
                     </div>
+                </div>
+
+                <?php elseif ($post['type'] === 'video'): ?>
+                <div class="post-details__image-wrapper post-photo__image-wrapper">
+                    <?= embedYoutubeVideo(esc($post['youtube_link'])); ?>
+                </div>
+
                 <?php endif; ?>
+
                 <div class="post__indicators">
                     <div class="post__buttons">
                         <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
@@ -97,83 +82,92 @@
                             <svg class="post__indicator-icon" width="19" height="17">
                                 <use xlink:href="#icon-repost"></use>
                             </svg>
-                            <span>0</span>
+                            <span><?= esc($post['reposts_count']); ?></span>
                             <span class="visually-hidden">количество репостов</span>
                         </a>
                     </div>
                     <span class="post__view"><?= esc($post['views_count']); ?> просмотров</span>
                 </div>
+
+                <?php if ($hashtags): ?>
                 <ul class="post__tags">
-                    <li><a href="#">#nature</a></li>
-                    <li><a href="#">#globe</a></li>
-                    <li><a href="#">#photooftheday</a></li>
-                    <li><a href="#">#canon</a></li>
-                    <li><a href="#">#landscape</a></li>
-                    <li><a href="#">#щикарныйвид</a></li>
+                    <?php foreach ($hashtags as $hashtag): ?>
+                    <li>
+                        <a href="#">#<?= esc($hashtag['name']); ?></a>
+                    </li>
+                    <?php endforeach; ?>
                 </ul>
+                <?php endif; ?>
+
                 <div class="comments">
                     <form class="comments__form form" action="#" method="post">
                         <div class="comments__my-avatar">
-                            <img class="comments__picture" src="/view/img/users/userpic-anton.jpg" alt="Аватар пользователя" width="40" height="40">
+                            <img class="comments__picture" src="../../uploads/avatars/userpic-medium.jpg" alt="Аватар пользователя">
                         </div>
-                        <div class="form__input-section form__input-section--error">
-                            <textarea class="comments__textarea form__textarea form__input" id="comments__textarea" placeholder="Ваш комментарий"></textarea>
-                            <label class="visually-hidden" for="comments__textarea">Ваш комментарий</label>
-                            <button class="form__error-button button" type="button">!</button>
+                        <div class="form__input-section"> <!-- Error class -> form__input-section--error -->
+                            <textarea class="comments__textarea form__textarea form__input" placeholder="Ваш комментарий"></textarea>
+                            <label class="visually-hidden">Ваш комментарий</label>
+                            <!-- Error button <button class="form__error-button button" type="button">!</button>
                             <div class="form__error-text">
                                 <h3 class="form__error-title">Ошибка валидации</h3>
                                 <p class="form__error-desc">Это поле обязательно к заполнению</p>
-                            </div>
+                            </div>-->
                         </div>
                         <button class="comments__submit button button--green" type="submit">Отправить</button>
                     </form>
+
+                    <?php if ($comments): ?>
                     <div class="comments__list-wrapper">
                         <ul class="comments__list">
-                            <?php foreach ($comments as $comment): ?>
-                                <li class="comments__item user">
-                                    <div class="comments__avatar">
-                                        <a class="user__avatar-link" href="#">
-                                            <img class="comments__picture" src="/view/img/users/<?= esc($comment['author_avatar']); ?>" alt="Аватар пользователя" width="40" height="40">
+
+                            <?php for ($i = 0; $i < count($comments) && $i < 3; $i++): ?>
+                            <li class="comments__item user">
+                                <div class="comments__avatar">
+                                    <a class="user__avatar-link" href="#">
+                                        <img class="comments__picture" src="/uploads/avatars/<?= esc($comments[$i]['author_avatar']) ?>" alt="Аватар пользователя <?= esc($comments[$i]['author']); ?>">
+                                    </a>
+                                </div>
+                                <div class="comments__info">
+                                    <div class="comments__name-wrapper">
+                                        <a class="comments__user-name" href="#">
+                                            <span><?= esc($comments[$i]['author']); ?></span>
                                         </a>
+                                        <time class="comments__time" datetime="<?= esc($comments[$i]['date']); ?>"><?= esc(getRelativeDateFormat($comments[$i]['date'], "назад")); ?></time>
                                     </div>
-                                    <div class="comments__info">
-                                        <div class="comments__name-wrapper">
-                                            <a class="comments__user-name" href="#">
-                                                <span><?= esc($comment['author']); ?></span>
-                                            </a>
-                                            <time class="comments__time" datetime="<?= esc($comment['date']); ?>"><?= get_relative_date_format($comment['date'], 'назад'); ?></time>
-                                        </div>
-                                        <p class="comments__text">
-                                            <?= esc($comment['text']); ?>
-                                        </p>
-                                    </div>
-                                </li>
-                            <?php endforeach; ?>
+                                    <p class="comments__text"><?= esc($comments[$i]['text']); ?></p>
+                                </div>
+                            </li>
+                            <?php endfor; ?>
                         </ul>
+
+                        <?php if ($post['comments_count'] > 3): ?>
                         <a class="comments__more-link" href="#">
                             <span>Показать все комментарии</span>
-                            <sup class="comments__amount">45</sup>
+                            <sup class="comments__amount"><?= esc($post['comments_count'] - 3); ?></sup>
                         </a>
+                        <?php endif; ?>
                     </div>
+                    <?php endif; ?>
                 </div>
             </div>
+
             <div class="post-details__user user">
                 <div class="post-details__user-info user__info">
                     <div class="post-details__avatar user__avatar">
                         <a class="post-details__avatar-link user__avatar-link" href="#">
-                            <img class="post-details__picture user__picture" src="<?= esc(get_path(false, $post['avatar'])); ?>" alt="Аватар пользователя">
+                            <img class="post-details__picture user__picture" src="uploads/avatars/<?= esc($post['avatar']); ?>" alt="Аватар пользователя <?= esc($post['author']); ?>">
                         </a>
                     </div>
                     <div class="post-details__name-wrapper user__name-wrapper">
                         <a class="post-details__name user__name" href="#">
                             <span><?= esc($post['author']); ?></span>
                         </a>
-                        <time class="post-details__time user__time" datetime="<?= esc($post['author_reg_date']); ?>"><?= esc(get_relative_date_format($post['author_reg_date'], "на сайте")); ?></time>
+                        <time class="post-details__time user__time" datetime="<?= esc($post['author_reg_date']); ?>"><?= esc(getRelativeDateFormat($post['author_reg_date'], "на сайте")); ?></time>
                     </div>
                 </div>
                 <div class="post-details__rating user__rating">
                     <p class="post-details__rating-item user__rating-item user__rating-item--subscribers">
-                        <span class="post-details__rating-amount user__rating-amount">0</span>
+                        <span class="post-details__rating-amount user__rating-amount"><?= esc($post['subscriptions_count']); ?></span>
                         <span class="post-details__rating-text user__rating-text">подписчиков</span>
                     </p>
                     <p class="post-details__rating-item user__rating-item user__rating-item--publications">
@@ -187,5 +181,6 @@
                 </div>
             </div>
         </div>
+
     </section>
 </div>

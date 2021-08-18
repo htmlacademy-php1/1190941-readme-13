@@ -10,7 +10,6 @@ function getPostById ($db, $id)
                youtube_link,
                link,
                views_count,
-               repost,
                u.name AS author,
                u.avatar_name AS avatar,
                u.registration_date AS author_reg_date,
@@ -23,7 +22,13 @@ function getPostById ($db, $id)
                 WHERE p.id = c.post_id) AS comments_count,
                (SELECT COUNT(author_id)
                 FROM posts p
-                WHERE p.author_id = u.id) AS publications_count
+                WHERE p.author_id = u.id) AS publications_count,
+               (SELECT COUNT(user_id)
+                FROM subscriptions s
+                WHERE s.user_id = u.id) AS subscriptions_count,
+               (SELECT COUNT(post_id)
+                FROM reposts s
+                WHERE s.post_id = p.id) AS reposts_count
         FROM posts p
                  JOIN users u ON author_id = u.id
                  JOIN types t ON type_id = t.id
