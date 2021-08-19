@@ -72,12 +72,12 @@ function getPosts ($db, $offset, $postType = '', $sort = '', $sortDirection = ''
          LIMIT ?
          OFFSET ?;";
 
-    return ($postType)
-        ? sqlGetMany($db, $sql, [$postType, $limit, $offset])
-        : sqlGetMany($db, $sql, [$limit, $offset]);
+    $data = $postType ? [$postType, $limit, $offset] : [$limit, $offset];
+
+    return sqlGetMany($db, $sql, $data);
 }
 
-function getPagesCount ($db, $postType = '')
+function getPagesCount ($db, string $postType = null)
 {
     return ($postType)
         ? current(sqlGetSingle($db, '

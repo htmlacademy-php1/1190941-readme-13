@@ -11,7 +11,7 @@ require 'bootstrap.php';
 require 'model/types.php';
 require 'model/posts.php';
 
-$queryString = $_GET ?? [];
+$queryString = $_GET ?? null;
 $queryString['type'] = $queryString['type'] ?? null;
 $postTypes = getPostTypes($db);
 
@@ -22,7 +22,12 @@ if ($queryString['type'] && !in_array($queryString['type'], array_column($postTy
 $pagesCount = getPagesCount($db, $queryString['type']);
 $limit = 6;
 $totalPages = intval(ceil($pagesCount / $limit));
-$queryString['page'] = intval($queryString['page'] ?? 1);
+$queryString['page'] = $queryString['page'] ?? 1;
+
+if (is_string($queryString['page'])) {
+    $queryString['page'] = intval($queryString['page']);
+}
+
 $offset = ($queryString['page'] - 1) * $limit;
 
 $pagination['prev'] = $queryString['page'] - 1;
