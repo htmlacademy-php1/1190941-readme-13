@@ -130,7 +130,7 @@ function getNounPluralForm(int $number, string $one, string $two, string $many):
  * @param array $data Ассоциативный массив с данными для шаблона
  * @return string Итоговый HTML
  */
-function includeTemplate (string $name, array $data = []): string {
+function includeTemplate(string $name, array $data = []): string {
     $name = 'view/templates/' . $name;
 
     ob_start();
@@ -255,7 +255,7 @@ function generateRandomDate($index)
     return $dt;
 }
 
-function cropText (string $text, int $maxChars = 300): string
+function cropText(string $text, int $maxChars = 300): string
 {
     if (mb_strlen($text) < $maxChars) {
         return $text;
@@ -281,19 +281,19 @@ function cropText (string $text, int $maxChars = 300): string
     return $text . ' ...';
 }
 
-function esc ($content)
+function esc($content)
 {
     return htmlspecialchars($content, ENT_QUOTES);
 }
 
-function showTitleDateFormat (string $dateTime): string
+function showTitleDateFormat(string $dateTime): string
 {
     $dateTime = new DateTime($dateTime, new DateTimeZone('Europe/Moscow'));
 
     return $dateTime->format('d-m-Y H:i');
 }
 
-function getRelativeDateFormat (string $postDate, string $stringEnd): string
+function getRelativeDateFormat(string $postDate, string $stringEnd): string
 {
     $postDate = new DateTime($postDate, new DateTimeZone('Europe/Moscow'));
     $currentDate = new DateTime('now', new DateTimeZone('Europe/Moscow'));
@@ -323,7 +323,7 @@ function getRelativeDateFormat (string $postDate, string $stringEnd): string
     return $correctDateFormat;
 }
 
-function preparedQuery ($db, string $sql, $params)
+function preparedQuery($db, string $sql, $params)
 {
     $types = str_repeat('s', count($params));
     $stmt = $db->prepare($sql);
@@ -333,7 +333,7 @@ function preparedQuery ($db, string $sql, $params)
     return $stmt;
 }
 
-function sqlSelect ($db, string $sql, array $params = [])
+function sqlSelect($db, string $sql, array $params = null)
 {
     if (!$params) {
         return $db->query($sql);
@@ -342,24 +342,19 @@ function sqlSelect ($db, string $sql, array $params = [])
     return preparedQuery($db, $sql, $params)->get_result();
 }
 
-function sqlGetSingle ($db, string $sql, array $params = [])
+function sqlGetSingle($db, string $sql, array $params = null)
 {
     return sqlSelect($db, $sql, $params)->fetch_assoc();
 }
 
-function sqlGetMany ($db, string $sql, array $params = [])
+function sqlGetMany($db, string $sql, array $params = null)
 {
     return sqlSelect($db, $sql, $params)->fetch_all(MYSQLI_ASSOC);
 }
 
-function getQueryString (array $queryString, array $modifier):string
+function getQueryString(array $queryString, array $modifier):string
 {
-    // TODO избавится от $mergedArray, подумать
     $mergedArray = array_merge($queryString, $modifier);
-    foreach ($mergedArray as $key => $value) {
-        if ($value === null) {
-            unset($mergedArray[$key]);
-        }
-    }
-    return $mergedArray ? '?' . http_build_query($mergedArray) : '/';
+
+    return array_filter($mergedArray) ? '?' . http_build_query($mergedArray) : '/';
 }

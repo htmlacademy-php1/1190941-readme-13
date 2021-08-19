@@ -1,6 +1,6 @@
 <?php
 
-function getPosts ($db, $offset, $postType = '', $limit = 6) {
+function getPosts ($db, int $offset, string $postType = null, int $limit = 6) {
 
     $sql = "SELECT p.*,
              u.name AS author,
@@ -21,12 +21,12 @@ function getPosts ($db, $offset, $postType = '', $limit = 6) {
          LIMIT ?
          OFFSET ?;";
 
-    return ($postType)
-        ? sqlGetMany($db, $sql, [$postType, $limit, $offset])
-        : sqlGetMany($db, $sql, [$limit, $offset]);
+    $data = $postType ? [$postType, $limit, $offset] : [$limit, $offset];
+
+    return sqlGetMany($db, $sql, $data);
 }
 
-function getPagesCount ($db, $postType = '') {
+function getPagesCount ($db, string $postType = null) {
     return ($postType)
         ? current(sqlGetSingle($db, '
         SELECT COUNT(*)
