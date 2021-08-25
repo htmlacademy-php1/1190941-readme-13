@@ -24,13 +24,13 @@ CREATE TABLE posts (
     creation_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     type_id INT NOT NULL,
     author_id INT NOT NULL,
-    text_content TEXT DEFAULT NULL,
+    original_author_id INT DEFAULT NULL,
+    content TEXT NOT NULL,
     cite_author VARCHAR(255) DEFAULT NULL,
-    img_name VARCHAR(255) DEFAULT NULL,
-    youtube_link VARCHAR(255) DEFAULT NULL,
-    link VARCHAR(255) DEFAULT NULL,
     views_count INT DEFAULT NULL,
+    repost BOOL DEFAULT NULL,
     FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (original_author_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (type_id) REFERENCES types(id) ON DELETE CASCADE
 );
 
@@ -80,13 +80,5 @@ CREATE TABLE subscriptions (
     follower_id INT NOT NULL,
     user_id INT NOT NULL,
     FOREIGN KEY (follower_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
-
-CREATE TABLE reposts (
-    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    post_id INT NOT NULL,
-    user_id INT NOT NULL,
-    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );

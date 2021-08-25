@@ -16,7 +16,12 @@ if (!is_string($_GET['id'])) {
     http_response_code(404);
 }
 
-$id = intval($_GET['id'] ?? null);
+$id = $_GET['id'] ?? null;
+
+if (is_string($id)) {
+    $id = intval($id);
+}
+
 $post = getPostById($db, $id);
 
 if (!$post) {
