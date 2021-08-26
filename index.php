@@ -13,10 +13,16 @@ require 'model/posts.php';
 
 $queryString = $_GET ?? null;
 $queryString['type'] = $queryString['type'] ?? null;
+
+// TODO подумать как переписать условие
+if (!is_string($queryString['type']) && $queryString['type'] !== null || $queryString['type'] === '0' || $queryString['type'] === '') {
+    get404StatusCode();
+}
+
 $postTypes = getPostTypes($db);
 
-if ($queryString['type'] && !in_array($queryString['type'], array_column($postTypes, 'id')) || $queryString['type'] === '0' || $queryString['type'] === '') {
-    http_response_code(404);;
+if ($queryString['type'] && !in_array($queryString['type'], array_column($postTypes, 'id'))) {
+    get404StatusCode();
 }
 
 $pagesCount = getPagesCount($db, $queryString['type']);

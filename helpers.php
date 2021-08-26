@@ -358,3 +358,9 @@ function getQueryString(array $queryString, array $modifier):string
 
     return array_filter($mergedArray) ? '?' . http_build_query($mergedArray) : '/';
 }
+
+function get404StatusCode()
+{
+    http_response_code(404);
+    exit();
+}

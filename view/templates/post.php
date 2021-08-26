@@ -16,14 +16,14 @@
 
                 <?php if ($post['type'] === 'photo'): ?>
                 <div class="post-details__image-wrapper post-photo__image-wrapper">
-                    <img src="uploads/photos/<?= esc($post['photo']) ?>" alt="Фото от пользователя <?= esc($post['author']) ?>" width="760" height="507">
+                    <img src="uploads/photos/<?= esc($post['content']) ?>" alt="Фото от пользователя <?= esc($post['author']) ?>" width="760" height="507">
                 </div>
 
                 <?php elseif ($post['type'] === 'quote'): ?>
                 <div class="post-details__image-wrapper post-quote">
                     <div class="post__main">
                         <blockquote>
-                            <p><?= esc($post['text']) ?></p>
+                            <p><?= esc($post['content']) ?></p>
                             <cite><?= esc($post['cite_author']) ?></cite>
                         </blockquote>
                     </div>
@@ -32,20 +32,20 @@
                 <?php elseif ($post['type'] === 'text'): ?>
                 <div class="post-details__image-wrapper post-text">
                     <div class="post__main">
-                        <p><?= esc($post['text']) ?></p>
+                        <p><?= esc($post['content']) ?></p>
                     </div>
                 </div>
 
                 <?php elseif ($post['type'] === 'link'): ?>
                 <div class="post__main">
                     <div class="post-link__wrapper">
-                        <a class="post-link__external" href="//<?= esc($post['link']); ?>" title="Перейти по ссылке <?= esc($post['link']); ?>">
+                        <a class="post-link__external" href="//<?= esc($post['content']); ?>" title="Перейти по ссылке <?= esc($post['content']); ?>">
                             <div class="post-link__info-wrapper">
                                 <div class="post-link__icon-wrapper">
-                                    <img src="https://www.google.com/s2/favicons?domain=<?= esc($post['link']); ?>" alt="Иконка">
+                                    <img src="https://www.google.com/s2/favicons?domain=<?= esc($post['content']); ?>" alt="Иконка">
                                 </div>
                                 <div class="post-link__info">
-                                    <h3><?= esc($post['link']); ?></h3>
+                                    <h3><?= esc($post['content']); ?></h3>
                                 </div>
                             </div>
                         </a>
@@ -54,7 +54,7 @@
 
                 <?php elseif ($post['type'] === 'video'): ?>
                 <div class="post-details__image-wrapper post-photo__image-wrapper">
-                    <?= embedYoutubeVideo(esc($post['youtube_link'])); ?>
+                    <?= embedYoutubeVideo(esc($post['content'])); ?>
                 </div>
 
                 <?php endif; ?>
@@ -82,7 +82,7 @@
                             <svg class="post__indicator-icon" width="19" height="17">
                                 <use xlink:href="#icon-repost"></use>
                             </svg>
-                            <span><?= esc($post['reposts_count']); ?></span>
+                            <span>0</span>
                             <span class="visually-hidden">количество репостов</span>
                         </a>
                     </div>

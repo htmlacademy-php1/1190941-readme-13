@@ -13,7 +13,7 @@ require 'model/hashtags.php';
 
 // TODO додумать с 0, ?id[]=343 не передавать в getPostById(), и что-то с undefined index (вспомнить где)
 if (!is_string($_GET['id'])) {
-    http_response_code(404);
+    get404StatusCode();
 }
 
 $id = $_GET['id'] ?? null;
@@ -25,7 +25,7 @@ if (is_string($id)) {
 $post = getPostById($db, $id);
 
 if (!$post) {
-    http_response_code(404);
+    get404StatusCode();
 }
 
 $comments = getPostComments($db, $id);
