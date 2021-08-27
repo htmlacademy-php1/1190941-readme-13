@@ -74,43 +74,46 @@
         <?php foreach ($postData as $post): ?>
             <article class="popular__post post post-<?= esc($post['type']); ?>">
                 <header class="post__header">
-                    <h2><?= esc($post['title']); ?></h2>
+                    <h2>
+                        <!--TODO прочесть доку по srintf, может удобнее будет-->
+                        <a href="<?= '/post.php?id=' . esc($post['id']); ?>"><?= esc($post['title']); ?></a>
+                    </h2>
                 </header>
 
                 <div class="post__main">
                     <!--здесь содержимое карточки-->
                     <?php if ($post['type'] === 'quote'): ?>
                         <blockquote>
-                            <p><?= esc($post['text_content']); ?></p>
+                            <p><?= esc($post['content']); ?></p>
                             <cite><?= esc($post['cite_author']); ?></cite>
                         </blockquote>
                     <?php elseif ($post['type'] === 'text'): ?>
-                        <p><?= $receivedText = cropText(esc($post['text_content'])); ?></p>
-                        <?php if ($receivedText !== $post['text_content']): ?>
+                        <p><?= $receivedText = cropText(esc($post['content'])); ?></p>
+                        <?php if ($receivedText !== $post['content']): ?>
                             <a class="post-text__more-link" href="#">Читать далее</a>
                         <?php endif; ?>
                     <?php elseif ($post['type'] === 'photo'): ?>
                         <div class="post-photo__image-wrapper">
-                            <img src="uploads/photos/<?= esc($post['img_name']); ?>" alt="Фото от пользователя <?= esc($post['author']); ?>" width="360" height="240">
+                            <img src="uploads/photos/<?= esc($post['content']); ?>" alt="Фото от пользователя <?= esc($post['author']); ?>" width="360" height="240">
                         </div>
                     <?php elseif ($post['type'] === 'link'): ?>
                         <div class="post-link__wrapper">
-                            <a class="post-link__external" href="//<?= esc($post['link']); ?>" title="Перейти по ссылке <?= esc($post['link']); ?>">
+                            <a class="post-link__external" href="//<?= esc($post['content']); ?>" title="Перейти по ссылке <?= esc($post['content']); ?>">
                                 <div class="post-link__info-wrapper">
                                     <div class="post-link__icon-wrapper">
-                                        <img src="//www.google.com/s2/favicons?domain=<?= esc($post['link']); ?>" alt="Иконка <?= esc($post['link']); ?>">
+                                        <img src="//www.google.com/s2/favicons?domain=<?= esc($post['content']); ?>" alt="Иконка <?= esc($post['content']); ?>">
                                     </div>
                                     <div class="post-link__info">
                                         <h3><?= esc($post['title']); ?></h3>
                                     </div>
                                 </div>
-                                <span><?= esc($post['link']); ?></span>
+                                <span><?= esc($post['content']); ?></span>
                             </a>
                         </div>
                     <?php elseif ($post['type'] === 'video'): ?>
                         <div class="post-video__block">
                             <div class="post-video__preview">
-                                <?= embedYoutubeCover(esc($post['youtube_link'])); ?>
+                                <?= embedYoutubeCover(esc($post['content'])); ?>
                             </div>
                             <a href="/" class="post-video__play-big button">
                                 <svg class="post-video__play-big-icon" width="14" height="14">
@@ -144,14 +147,14 @@
                                 <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                                     <use xlink:href="#icon-heart-active"></use>
                                 </svg>
-                                <span>0</span>
+                                <span><?= esc($post['likes_count']); ?></span>
                                 <span class="visually-hidden">количество лайков</span>
                             </a>
                             <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
                                 <svg class="post__indicator-icon" width="19" height="17">
                                     <use xlink:href="#icon-comment"></use>
                                 </svg>
-                                <span>0</span>
+                                <span><?= esc($post['comments_count']); ?></span>
                                 <span class="visually-hidden">количество комментариев</span>
                             </a>
                             <span class="post__view"><?= esc($post['views_count']); ?></span>
