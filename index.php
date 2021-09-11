@@ -5,7 +5,7 @@
  * @var array $queryString
  * @var int $isAuth
  * @var string $userName
-*/
+ */
 
 require 'bootstrap.php';
 require 'model/types.php';

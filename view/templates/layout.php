@@ -183,7 +183,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <a class="header__post-button button button--transparent" href="/">Пост</a>
+                                    <a class="header__post-button button button--transparent" href="/add.php">Пост</a>
                                 </li>
                             </ul>
                         </nav>
@@ -253,8 +253,8 @@
             </div>
         </footer>
 
-        <script src="/view/libs/dropzone.js"></script>
-        <script src="/view/js/dropzone-settings.js"></script>
+<!--        <script src="/view/libs/dropzone.js"></script>-->
+<!--        <script src="/view/js/dropzone-settings.js"></script>-->
         <script src="/view/js/main.js"></script>
     </body>
 </html>
