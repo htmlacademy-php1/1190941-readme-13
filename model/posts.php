@@ -82,3 +82,10 @@ function getPagesCount ($db, string $postType = null)
             [$postType]))
         : current(sqlGetSingle($db, 'SELECT COUNT(*) FROM posts'));
 }
+
+function insertNewPost ($db, array $data)
+{
+    $sql = "INSERT INTO posts (title, type_id, author_id, content, cite_author) VALUES (?, ?, ?, ?, ?)";
+
+    return preparedQuery($db, $sql, [$data['title'], $data['typeId'], $data['authorId'], $data['content'], $data['citeAuthor']]);
+}

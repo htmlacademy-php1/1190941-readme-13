@@ -324,7 +324,7 @@ function getRelativeDateFormat(string $postDate, string $stringEnd): string
     return $correctDateFormat;
 }
 
-function preparedQuery($db, string $sql, $params)
+function preparedQuery($db, string $sql, array $params)
 {
     $types = str_repeat('s', count($params));
     $stmt = $db->prepare($sql);

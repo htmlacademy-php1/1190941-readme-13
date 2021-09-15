@@ -1,7 +1,6 @@
 <?php
 /**
  * @var array $postTypes
- * @var array $multipartTypes
  * @var array $errors
  * @var string $invalidBlock
  */
@@ -41,7 +40,7 @@
                         <h2 class="visually-hidden">Форма добавления <!-- TODO название записи --></h2>
 
                         <form class="adding-post__form form" action="/add.php"
-                              method="post"<?= in_array($type['class_name'], $multipartTypes) ? ' enctype="multipart/form-data"' : '' ?>>
+                              method="post"<?= $type['class_name'] === 'photo' ? ' enctype="multipart/form-data"' : '' ?>>
                             <div class="form__text-inputs-wrapper">
 
                                 <div class="form__<?= esc($type['class_name']); ?>-inputs">
@@ -68,6 +67,7 @@
                                 </div>
 
                                 <?php if (count($errors)): ?>
+                                <!-- TODO показывается и на других табах, нужно фиксить -->
                                 <div class="form__invalid-block">
                                     <b class="form__invalid-slogan">Пожалуйста, исправьте следующие ошибки:</b>
                                     <ul class="form__invalid-list">

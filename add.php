@@ -7,9 +7,13 @@
 
 require 'bootstrap.php';
 require 'model/types.php';
+require 'model/posts.php';
+require 'model/hashtags.php';
 
 $formData = $_POST ?? null;
 $postType = $formData['post-type'] ?? null;
+$postTypes = getPostTypes($db);
+
 $noValidateFields = [
     'post-type',
     'photo-main',
@@ -23,7 +27,7 @@ $fieldsMap = [
     "{$postType}-tags" => 'Теги записи',
 ];
 
-if (isset($formData)) {
+if (!empty($formData)) {
     foreach ($formData as $name => $value) {
         if (!in_array($name, $noValidateFields) && empty($value)) {
             $errors[$name]['name'] = $fieldsMap[$name] ?? null;
@@ -45,25 +49,23 @@ if (isset($formData)) {
         }
     }
 
-    $isPhoto = $_FILES['photo-main'] ?? null;
+    $isFile = $_FILES['photo-main'] ?? null;
 
-    if ($isPhoto && $isPhoto['error'] === 0) {
+    if ($isFile && $isFile['error'] === 0) {
         $fileInfo = finfo_open(FILEINFO_MIME_TYPE);
-        $fileName = $_FILES['photo-main']['tmp_name'];
+        $fileTempName = $_FILES['photo-main']['tmp_name'];
 
         $acceptedMimeTypes = [
             'image/png',
             'image/jpeg',
             'image/gif',
         ];
-        $mimeType = finfo_file($fileInfo, $fileName);
+        $mimeType = finfo_file($fileInfo, $fileTempName);
 
         if (!in_array($mimeType, $acceptedMimeTypes)) {
             $errors['photo-main']['name'] = $fieldsMap['photo-main'];
             $errors['photo-main']['title'] = 'Не верный формат изображения';
             $errors['photo-main']['description'] = 'Пожалуйста загрузите фотографию в одном из форматов - png, jpeg, gif';
-        } else {
-            // TODO сохранить загруженный файл в директории /uploads/
         }
 
     } elseif (isset($formData['photo-url'])) {
@@ -103,19 +105,50 @@ if (isset($formData)) {
         }
     }
 
-
     if (empty($errors)) {
-        // TODO сформировать sql запрос на добавление нового поста в БД
+
+        $data['title'] = $formData["{$postType}-heading"];
+        $data['tags'] = explode(' ', $_POST["{$postType}-tags"]);
+        $data['typeId'] = current(array_filter($postTypes, function ($type) use ($postType)
+        {
+            return $type['class_name'] === $postType;
+        }))['id'];
+
+        // TODO автор после разбора авторизации
+        $data['authorId'] = 1;
+        $data['content'] = $formData["{$postType}-main"] ?? null;
+        $data['citeAuthor'] = $postType === 'quote' ? $formData['quote-author'] : null;
+
+        if (isset($isFile) && $isFile['error'] === 0) {
+            $fileName = $_FILES['photo-main']['name'];
+            $filePath = __DIR__ . '/uploads/photos/';
+            $fileUrl = '/uploads/photos/' . $fileName;
+
+            move_uploaded_file($_FILES['photo-main']['tmp_name'], $filePath . $fileName);
+
+            $data['content'] = $fileName;
+        } elseif (isset($formData['photo-url']) && $postType === 'photo') {
+            $data['content'] = 'privet';
+            //  TODO загрузить изображение по ссылке, сохранить его в папку /uploads/ отдать директорию +имя файла
+        }
+
+        insertNewPost($db, $data);
+        $postId = $db->insert_id;
+
+        foreach ($data['tags'] as $tag) {
+            insertTags($db, [$tag]);
+            $tagId = $db->insert_id;
+            setTagToPost($db, [$tagId, $postId]);
+        }
+
+        //  TODO Отправить уведомления подписчикам пользователя о новом посте
+
+        header("Location: /post.php?id={$postId}");
     }
 }
 
-
-$postTypes = getPostTypes($db);
-$multipartTypes = ['photo', 'video'];
-
 $pageMainContent = includeTemplate('add.php', [
     'postTypes' => $postTypes,
-    'multipartTypes' => $multipartTypes,
     'errors' => $errors,
 ]);
 
