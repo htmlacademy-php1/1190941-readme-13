@@ -146,12 +146,12 @@ function includeTemplate(string $name, array $data = []): string {
  *
  * @return string Ошибку если валидация не прошла
  */
-function check_youtube_url($url)
+function checkYoutubeUrl($url)
 {
     $id = extractYoutubeId($url);
 
     set_error_handler(function () {}, E_WARNING);
-    $headers = get_headers('https://www.youtube.com/oembed?format=json&url=http://www.youtube.com/watch?v=' . $id);
+    $headers = get_headers('https://www.youtube.com/oembed?format=json&url=https://www.youtube.com/watch?v=' . $id);
     restore_error_handler();
 
     if (!is_array($headers)) {
@@ -213,6 +213,7 @@ function extractYoutubeId(string $youtubeUrl)
     $id = false;
 
     $parts = parse_url($youtubeUrl);
+    $parts['host'] = $parts['host'] ?? null;
 
     if ($parts) {
         if ($parts['path'] == '/watch') {
@@ -323,7 +324,7 @@ function getRelativeDateFormat(string $postDate, string $stringEnd): string
     return $correctDateFormat;
 }
 
-function preparedQuery($db, string $sql, $params)
+function preparedQuery($db, string $sql, array $params)
 {
     $types = str_repeat('s', count($params));
     $stmt = $db->prepare($sql);
@@ -363,4 +364,9 @@ function get404StatusCode()
 {
     http_response_code(404);
     exit();
+}
+
+function getPostVal($name)
+{
+    return $_POST[$name] ?? "";
 }
