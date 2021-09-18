@@ -128,7 +128,7 @@ if (!empty($formData)) {
             $data['content'] = $fileName;
         } elseif (isset($formData['photo-url']) && $postType === 'photo') {
             $data['content'] = 'privet';
-            //  TODO загрузить изображение по ссылке, сохранить его в папку /uploads/ отдать директорию +имя файла
+            //  TODO загрузить изображение по ссылке используя curl или file_get_contents
         }
 
         insertNewPost($db, $data);
