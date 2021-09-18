@@ -52,15 +52,13 @@ if (!empty($formData)) {
     $isFile = $_FILES['photo-main'] ?? null;
 
     if ($isFile && $isFile['error'] === 0) {
-        $fileInfo = finfo_open(FILEINFO_MIME_TYPE);
         $fileTempName = $_FILES['photo-main']['tmp_name'];
-
+        $mimeType = mime_content_type($fileTempName);
         $acceptedMimeTypes = [
             'image/png',
             'image/jpeg',
             'image/gif',
         ];
-        $mimeType = finfo_file($fileInfo, $fileTempName);
 
         if (!in_array($mimeType, $acceptedMimeTypes)) {
             $errors['photo-main']['name'] = $fieldsMap['photo-main'];
@@ -120,6 +118,7 @@ if (!empty($formData)) {
         $data['citeAuthor'] = $postType === 'quote' ? $formData['quote-author'] : null;
 
         if (isset($isFile) && $isFile['error'] === 0) {
+            //  TODO сгенерировать имя файла
             $fileName = $_FILES['photo-main']['name'];
             $filePath = __DIR__ . '/uploads/photos/';
             $fileUrl = '/uploads/photos/' . $fileName;
@@ -136,12 +135,21 @@ if (!empty($formData)) {
         $postId = $db->insert_id;
 
         foreach ($data['tags'] as $tag) {
-            insertTags($db, [$tag]);
-            $tagId = $db->insert_id;
-            setTagToPost($db, [$tagId, $postId]);
+            $tagId = null;
+
+            if (!selectTag($db, [$tag])) {
+                insertTag($db, [$tag]);
+                $tagId = $db->insert_id;
+            } else {
+                $tagId = selectTag($db, [$tag])['id'];
+            }
+
+            if (!selectTagToPost($db, [$tagId, $postId])){
+                setTagToPost($db, [$tagId, $postId]);
+            }
         }
 
-        //  TODO Отправить уведомления подписчикам пользователя о новом посте
+        //  TODO Отправить подписчикам пользователя уведомления о новом посте
 
         header("Location: /post.php?id={$postId}");
     }

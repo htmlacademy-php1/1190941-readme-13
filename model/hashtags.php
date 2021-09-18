@@ -10,12 +10,25 @@ function getPostTags ($db, $id)
         [$id]);
 }
 
-// TODO дописать запрос на вставку тегов
-function insertTags ($db, array $hashtag)
+function selectTag ($db, array $hashtag)
+{
+    $sql = "SELECT id, name FROM hashtags WHERE name = ?";
+
+    return sqlGetSingle($db, $sql, $hashtag);
+}
+
+function insertTag ($db, array $hashtag)
 {
     $sql = "INSERT INTO hashtags (name) VALUES (?)";
 
     return preparedQuery($db, $sql, $hashtag);
+}
+
+function selectTagToPost ($db, array $data)
+{
+    $sql = "SELECT hashtag_id, post_id FROM post_tags WHERE hashtag_id = ? && post_id = ?";
+
+    return sqlGetSingle($db, $sql, $data);
 }
 
 function setTagToPost ($db, array $data)
