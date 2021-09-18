@@ -68,15 +68,9 @@
 
                                 <?php if (count($errors)): ?>
                                 <!-- TODO показывается и на других табах, нужно фиксить -->
-                                <div class="form__invalid-block">
-                                    <b class="form__invalid-slogan">Пожалуйста, исправьте следующие ошибки:</b>
-                                    <ul class="form__invalid-list">
-                                        <!-- TODO Вывести динамически список всех ошибок -->
-                                        <?php foreach($errors as $error): ?>
-                                        <li class="form__invalid-item"><?= esc($error['name']) ?>. <?= esc($error['description']) ?>.</li>
-                                        <?php endforeach; ?>
-                                    </ul>
-                                </div>
+                                <?= includeTemplate('template-parts/form-error.php', [
+                                    'errors' => $errors,
+                                ]) ?>
                                 <?php endif; ?>
 
                             </div>

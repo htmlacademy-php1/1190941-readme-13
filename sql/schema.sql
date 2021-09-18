@@ -8,7 +8,7 @@ CREATE TABLE users (
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(64) NOT NULL,
-    avatar_name VARCHAR(255) NOT NULL UNIQUE,
+    avatar_name VARCHAR(255) DEFAULT NULL UNIQUE,
     registration_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

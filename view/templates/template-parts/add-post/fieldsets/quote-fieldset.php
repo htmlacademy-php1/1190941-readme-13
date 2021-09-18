@@ -15,7 +15,7 @@
                   placeholder="Текст цитаты"><?= esc(getPostVal($fieldName)); ?></textarea>
 
         <?php if (!empty($errors) && isset($errors[$fieldName])): ?>
-            <?= includeTemplate('template-parts/add-post/field-error-text.php', [
+            <?= includeTemplate('template-parts/field-error.php', [
                 'errorTitle' => $errors[$fieldName]['title'] ?? null,
                 'errorDesc' => $errors[$fieldName]['description'] ?? null,
             ]); ?>
@@ -32,7 +32,7 @@
                value="<?= esc(getPostVal('quote-author')); ?>">
 
         <?php if (!empty($errors) && isset($errors['quote-author'])): ?>
-            <?= includeTemplate('template-parts/add-post/field-error-text.php', [
+            <?= includeTemplate('template-parts/field-error.php', [
                 'errorTitle' => $errors['quote-author']['title'] ?? null,
                 'errorDesc' => $errors['quote-author']['description'] ?? null,
             ]); ?>

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @var string $pageTitle
  * @var bool $isAuth
@@ -7,7 +6,6 @@
  * @var string $pageMainClass
  * @var string $pageMainContent
  */
-
 ?>
 
 <!DOCTYPE html>
@@ -136,6 +134,7 @@
                                 </li>
                             </ul>
                             <!-- здесь должен быть PHP код, который показывает следующий тег по условию -->
+                            <?php if (0 != 0): ?>
                             <ul class="header__user-nav">
                                 <li class="header__profile">
                                     <a class="header__profile-link" href="#">
@@ -186,6 +185,18 @@
                                     <a class="header__post-button button button--transparent" href="/add.php">Пост</a>
                                 </li>
                             </ul>
+                            <?php elseif (0 === 0): ?>
+                            <ul class="header__user-nav">
+                                <li class="header__authorization">
+                                    <a class="header__user-button header__authorization-button button">Вход</a>
+                                </li>
+                                <li>
+                                    <?php $regActiveClass = $_SERVER['SCRIPT_NAME'] === '/registration.php' ? 'header__user-button--active ' : ''; ?>
+                                    <?php $regHref = $_SERVER['SCRIPT_NAME'] !== '/registration.php' ? 'href="/registration.php"' : ''; ?>
+                                    <a class="header__user-button <?= $regActiveClass; ?>header__register-button button"<?= $regHref; ?>>Регистрация</a>
+                                </li>
+                            </ul>
+                            <?php endif; ?>
                         </nav>
                     <?php endif; ?>
                 </div>
@@ -253,6 +264,7 @@
             </div>
         </footer>
 
+        <!-- TODO что-то пошло не так и оно не отрабатывает, разобраться нет времени -->
 <!--        <script src="/view/libs/dropzone.js"></script>-->
 <!--        <script src="/view/js/dropzone-settings.js"></script>-->
         <script src="/view/js/main.js"></script>

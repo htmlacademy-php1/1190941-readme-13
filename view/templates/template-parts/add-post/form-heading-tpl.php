@@ -20,7 +20,7 @@
                value="<?= esc(getPostVal($type['class_name'] . '-heading')); ?>">
 
         <?php if (isset($errorTitle) && isset($errorDesc)): ?>
-            <?= includeTemplate('template-parts/add-post/field-error-text.php', [
+            <?= includeTemplate('template-parts/field-error.php', [
                 'errorTitle' => $errorTitle,
                 'errorDesc' => $errorDesc,
             ]); ?>
